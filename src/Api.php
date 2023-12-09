@@ -7,7 +7,6 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 
 use PDO;
 use PDOException;
-use Exception;
 
 class Api {
 
