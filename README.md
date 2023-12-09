@@ -16,7 +16,7 @@ Daily Buddy API is a native PHP RESTful API for Daily Buddy Mobile App.
 Copy code above to your terminal :
 
   ```
-   git clone https://github.com/Imdvlpr99/dailybuddy-api.git
+   $ composer require imdvlpr/dailybuddy-api
   ```
 
 ## Usage
@@ -25,15 +25,17 @@ Ensure the API is up and running before using. You can use tools like Postman to
 
 ## Endpoints
 
-The API endpoints are defined in the api folder. Below are the main endpoint categories:
+The API endpoints are defined in the api folder. Below are the main endpoint :
+   
+   - **POST /dailybuddy/api/create-activity** : Create daily activity.
+   
+   - **POST /dailybuddy/api/delete-activity** : Delete current daily activity by id.
+   
+   - **POST /dailybuddy/api/edit-activity** : Edit current selected daily activity by id.
 
-1. User Authentication :
-   
-   - **POST /api/otp/send-otp**        : Send OTP to WhatsApp number.
-   
-   - **POST /api/otp/send-otp-email**  : Send OTP to Email.
-   
-   - **POST /api/otp/verify-otp**      : Verify OTP number.
+   - **POST /dailybuddy/api/get-activity-list** : get all activity list.
+
+   - **POST /dailybuddy/api/update-activity-status** : Update daily activity status.
 
 For more detailed information on each endpoint, refer to the API Documentation.
 
