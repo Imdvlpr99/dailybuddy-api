@@ -52,7 +52,8 @@ class Api {
         }
 
         header("Content-Type: application/json");
-        return $jsonResponse;
+        echo $jsonResponse;
+      	exit;
     }
 
     public function addList($title, $desc, $isCompleted) {
