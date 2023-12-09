@@ -19,10 +19,6 @@ Copy code above to your terminal :
    $ composer require imdvlpr/dailybuddy-api
   ```
 
-## Usage
-
-Ensure the API is up and running before using. You can use tools like Postman to interact with the API.
-
 ## Endpoints
 
 The API endpoints are defined in the api folder. Below are the main endpoint :
