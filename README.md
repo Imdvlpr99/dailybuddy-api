@@ -1,10 +1,3 @@
-[![MIT License][license-shield]][license-url]
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Issues][issues-shield]][issues-url]
-
-[![Hits][hits-view]][hits-view-url]
-
 # Daily Buddy API
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
