@@ -1,0 +1,23 @@
+{
+    "name": "imdvlpr/dailybuddy-api",
+    "description": "Daily Buddy API",
+    "license": "MIT",
+    "type": "library",
+    "required": {
+        "php": ">=5.6.9"
+    },
+    "authors": [
+        {
+            "name": "imdvlpr",
+            "email": "imdvlpr.agency@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Imdvlpr\\": "src/"
+        },
+        "files": [
+            "src/Constant.php"
+        ]
+    }
+}
