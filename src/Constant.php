@@ -19,4 +19,6 @@ define('TODO_LIST', 'todo_list');
 define('ID', 'id');
 define('TITLE', 'title');
 define('DESCRIPTION', 'description');
+define('DATE', 'date');
+define('TIME', 'time');
 define('IS_COMPLETED', 'is_complete');

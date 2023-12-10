@@ -55,13 +55,15 @@ class Api {
       	exit;
     }
 
-    public function addList($title, $desc, $isCompleted) {
+    public function addList($title, $desc, $date, $time, $isCompleted) {
         try {
-            $sql = "INSERT INTO " . TODO_LIST . " (" . TITLE . ", " . DESCRIPTION . ", " . IS_COMPLETED . ") VALUES (:title, :desc, :isCompleted)";
+            $sql = "INSERT INTO " . TODO_LIST . " (" . TITLE . ", " . DESCRIPTION . ", " . DATE . ", " . TIME . ", " . IS_COMPLETED . ") VALUES (:title, :desc, :date, :time, :isCompleted)";
             
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':desc', $desc);
+            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':time', $time);
             $stmt->bindParam(':isCompleted', $isCompleted);
             
             if ($stmt->execute()) {
@@ -69,6 +71,14 @@ class Api {
             } else {
                 $this->handleStatus(false, "Gagal simpan data ke database");
             }
+        } catch (PDOException $e) {
+            $this->handleStatus(false, "Database error: " . $e->getMessage());
+        }
+    }
+
+    public function addCategory($categoryName) {
+        try {
+
         } catch (PDOException $e) {
             $this->handleStatus(false, "Database error: " . $e->getMessage());
         }
