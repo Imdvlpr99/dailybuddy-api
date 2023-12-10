@@ -44,7 +44,6 @@ class Api {
         }
     
         
-    
         if ($status) {
             http_response_code(200);
         } else {
