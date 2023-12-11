@@ -142,7 +142,7 @@ class Api {
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
                 if (!empty($rows)) {
-                    $this->handleStatus(true, $rows);
+                    $this->handleStatus(true, 'Success', $rows);
                 } else {
                     $this->handleStatus(false, "Data tidak ditemukan", []);
                 }
@@ -163,7 +163,7 @@ class Api {
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
                 if (!empty($rows)) {
-                    $this->handleStatus(true, $rows);
+                    $this->handleStatus(true, 'Success', $rows);
                 } else {
                     $this->handleStatus(false, "Data tidak ditemukan", []);
                 }
