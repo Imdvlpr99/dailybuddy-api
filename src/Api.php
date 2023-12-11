@@ -44,7 +44,6 @@ class Api {
         }
     
         
-    
         if ($status) {
             http_response_code(200);
         } else {
@@ -56,19 +55,99 @@ class Api {
       	exit;
     }
 
-    public function addList($title, $desc, $isCompleted) {
+    public function addList($title, $desc, $date, $time, $categoryId, $isCompleted) {
         try {
-            $sql = "INSERT INTO " . TODO_LIST . " (" . TITLE . ", " . DESCRIPTION . ", " . IS_COMPLETED . ") VALUES (:title, :desc, :isCompleted)";
+            $sql = "INSERT INTO " . TODO_LIST . " (" . TITLE . ", " . DESCRIPTION . ", " . DATE . ", " . TIME . ", " . CATEGORY_ID . ", " . IS_COMPLETED . ") 
+            VALUES (:title, :desc, :date, :time, :categoryId, :isCompleted)";
             
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':desc', $desc);
+            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':time', $time);
+            $stmt->bindParam(':categoryId', $categoryId);
             $stmt->bindParam(':isCompleted', $isCompleted);
             
             if ($stmt->execute()) {
-                $this->handleStatus(true, "Simpan data berhasil");
+                $this->handleStatus(true, "Aktivitas berhasil disimpan");
             } else {
-                $this->handleStatus(false, "Gagal simpan data ke database");
+                $this->handleStatus(false, "Aktivitas gagal disimpan");
+            }
+        } catch (PDOException $e) {
+            $this->handleStatus(false, "Database error: " . $e->getMessage());
+        }
+    }
+
+    public function addCategory($categoryName) {
+        try {
+            $sql = "INSERT INTO " . CATEGORY_LIST . " (" . CATEGORY_NAME . ") VALUES (:categoryName)";
+
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindParam(':categoryName', $categoryName);
+
+            if ($stmt->execute()) {
+                $this->handleStatus(true, "Kategori berhasil dibuat");
+            } else {
+                $this->handleStatus(false, "Kategori gagal dibuat");
+            }
+
+        } catch (PDOException $e) {
+            $this->handleStatus(false, "Database error: " . $e->getMessage());
+        }
+    }
+
+    public function deleteCategory($categoryId) {
+        try {
+            $sql = "DELETE FROM " . CATEGORY_LIST . " WHERE " . CATEGORY_ID . " = :categoryId";
+            $stmt = $this->connection->prepare($sql);
+
+            $stmt->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
+            $stmt->execute();
+            $rowCount = $stmt->rowCount();
+    
+            if ($rowCount > 0) {
+                $this->handleStatus(true, "Kategori berhasil dihapus");
+            } else {
+                $this->handleStatus(false, "Kategori gagal dihapus");
+            }
+        } catch (PDOException $e) {
+            $this->handleStatus(false, "Database error: " . $e->getMessage());
+        }
+    }
+
+    public function editCategory($categoryId, $categoryName) {
+        try {
+            $sql = "UPDATE " . CATEGORY_LIST. " SET " . CATEGORY_NAME . " = :categoryName WHERE " . CATEGORY_ID . " = :categoryId";
+            
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindParam(':categoryName', $categoryName);
+            $stmt->bindParam(':categoryId', $categoryId);
+            
+            if ($stmt->execute()) {
+                $this->handleStatus(true, "Kategori berhasil diperbaharui");
+            } else {
+                $this->handleStatus(false, "Kategori gagal diperbaharui");
+            }
+        } catch (PDOException $e) {
+            $this->handleStatus(false, "Database error: " . $e->getMessage());
+        }
+    }
+
+    public function getCategoryList() {
+        try {
+            $sql = "SELECT * FROM " . CATEGORY_LIST;
+            $stmt = $this->connection->query($sql);
+    
+            if ($stmt !== false) {
+                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+                if (!empty($rows)) {
+                    $this->handleStatus(true, $rows);
+                } else {
+                    $this->handleStatus(false, "Data tidak ditemukan", []);
+                }
+            } else {
+                $this->handleStatus(false, "Failed to execute the query");
             }
         } catch (PDOException $e) {
             $this->handleStatus(false, "Database error: " . $e->getMessage());
