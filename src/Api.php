@@ -117,16 +117,21 @@ class Api {
 
     public function editCategory($categoryId, $categoryName) {
         try {
-            $sql = "UPDATE " . CATEGORY_LIST. " SET " . CATEGORY_NAME . " = :categoryName WHERE " . CATEGORY_ID . " = :categoryId";
-            
+            $sql = "UPDATE " . CATEGORY_LIST . " SET " . CATEGORY_NAME . " = :categoryName WHERE " . CATEGORY_ID . " = :categoryId";
+    
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':categoryName', $categoryName);
             $stmt->bindParam(':categoryId', $categoryId);
-            
+    
             if ($stmt->execute()) {
-                $this->handleStatus(true, "Kategori berhasil diperbaharui");
+                // Check if any rows were affected
+                if ($stmt->rowCount() > 0) {
+                    $this->handleStatus(true, "Category successfully updated");
+                } else {
+                    $this->handleStatus(false, "No changes made to the category");
+                }
             } else {
-                $this->handleStatus(false, "Kategori gagal diperbaharui");
+                $this->handleStatus(false, "Failed to update category");
             }
         } catch (PDOException $e) {
             $this->handleStatus(false, "Database error: " . $e->getMessage());
@@ -184,9 +189,14 @@ class Api {
             $stmt->bindParam(':id', $id);
             
             if ($stmt->execute()) {
-                $this->handleStatus(true, "Berhasil Update Data");
+                // Check if any rows were affected
+                if ($stmt->rowCount() > 0) {
+                    $this->handleStatus(true, "Category successfully updated");
+                } else {
+                    $this->handleStatus(false, "No changes made to the category");
+                }
             } else {
-                $this->handleStatus(false, "Gagal Update Data");
+                $this->handleStatus(false, "Failed to update category");
             }
         } catch (PDOException $e) {
             $this->handleStatus(false, "Database error: " . $e->getMessage());
