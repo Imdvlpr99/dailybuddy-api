@@ -180,6 +180,44 @@ class Api {
         }
     }
 
+    public function getActivityListByDate($date) {
+        try {
+            $sql = "SELECT * FROM " . TODO_LIST . " WHERE " . DATE . " = :date";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindParam(':date', $date, PDO::PARAM_STR);
+            $stmt->execute();
+    
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            if (!empty($rows)) {
+                $this->handleStatus(true, 'Success', $rows);
+            } else {
+                $this->handleStatus(false, "Data tidak ditemukan", []);
+            }
+        } catch (PDOException $e) {
+            $this->handleStatus(false, "Database error: " . $e->getMessage());
+        }
+    }
+
+    public function getActivityDetail($id) {
+        try {
+            $sql = "SELECT * FROM " . TODO_LIST . " WHERE " . ID . " = :id";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindParam(':date', $id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            if (!empty($rows)) {
+                $this->handleStatus(true, 'Success', $rows);
+            } else {
+                $this->handleStatus(false, "Data tidak ditemukan", []);
+            }
+        } catch (PDOException $e) {
+            $this->handleStatus(false, "Database error: " . $e->getMessage());
+        }
+    }
+
     public function updateActivity($id, $isCompleted) {
         try {
             $sql = "UPDATE " . TODO_LIST . " SET " . IS_COMPLETED . " = :isCompleted WHERE " . ID . " = :id";
