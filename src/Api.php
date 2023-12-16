@@ -241,20 +241,27 @@ class Api {
         }
     }
 
-    public function editActivity($id, $title, $desc, $isCompleted) {
+    public function editActivity($id, $title, $desc, $date, $time, $categoryId, $isCompleted) {
         try {
-            $sql = "UPDATE " . TODO_LIST . " SET " . IS_COMPLETED . " = :isCompleted, " . TITLE . " = :title, " . DESCRIPTION . " = :description WHERE " . ID . " = :id";
+            $sql = "UPDATE " . TODO_LIST . " SET " . IS_COMPLETED . " = :isCompleted, " . TITLE . " = :title, " . DATE . " :date, " . TIME . " :time " . CATEGORY_ID . " :categoryId, " . DESCRIPTION . " = :description WHERE " . ID . " = :id";
             
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':isCompleted', $isCompleted);
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':description', $desc);
+            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':time', $time);
+            $stmt->bindParam(':categoryId', $categoryId);
             $stmt->bindParam(':id', $id);
             
             if ($stmt->execute()) {
-                $this->handleStatus(true, "Berhasil Update Data");
+                if ($stmt->rowCount() > 0) {
+                    $this->handleStatus(true, "Category successfully updated");
+                } else {
+                    $this->handleStatus(false, "No changes made to the category");
+                }
             } else {
-                $this->handleStatus(false, "Gagal Update Data");
+                $this->handleStatus(false, "Failed to update category");
             }
         } catch (PDOException $e) {
             $this->handleStatus(false, "Database error: " . $e->getMessage());
