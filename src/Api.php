@@ -243,12 +243,12 @@ class Api {
 
     public function editActivity($id, $title, $desc, $date, $time, $categoryId, $isCompleted) {
         try {
-            $sql = "UPDATE " . TODO_LIST . " SET " . IS_COMPLETED . " = :isCompleted, " . TITLE . " = :title, " . DATE . " :date, " . TIME . " :time " . CATEGORY_ID . " :categoryId, " . DESCRIPTION . " = :description WHERE " . ID . " = :id";
+            $sql = "UPDATE " . TODO_LIST . " SET " . IS_COMPLETED . " = :isCompleted, " . TITLE . " = :title, " . DESCRIPTION . " = :desc, " . DATE . " = :date, " . TIME . " = :time, " . CATEGORY_ID . " = :categoryId WHERE " . ID . " = :id";
             
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':isCompleted', $isCompleted);
             $stmt->bindParam(':title', $title);
-            $stmt->bindParam(':description', $desc);
+            $stmt->bindParam(':desc', $desc);
             $stmt->bindParam(':date', $date);
             $stmt->bindParam(':time', $time);
             $stmt->bindParam(':categoryId', $categoryId);
