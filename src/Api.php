@@ -180,6 +180,44 @@ class Api {
         }
     }
 
+    public function getActivityListByDate($date) {
+        try {
+            $sql = "SELECT * FROM " . TODO_LIST . " WHERE " . DATE . " = :date";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindParam(':date', $date, PDO::PARAM_STR);
+            $stmt->execute();
+    
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            if (!empty($rows)) {
+                $this->handleStatus(true, 'Success', $rows);
+            } else {
+                $this->handleStatus(false, "Data tidak ditemukan", []);
+            }
+        } catch (PDOException $e) {
+            $this->handleStatus(false, "Database error: " . $e->getMessage());
+        }
+    }
+
+    public function getActivityDetail($id) {
+        try {
+            $sql = "SELECT * FROM " . TODO_LIST . " WHERE " . ID . " = :id";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindParam(':date', $id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            if (!empty($rows)) {
+                $this->handleStatus(true, 'Success', $rows);
+            } else {
+                $this->handleStatus(false, "Data tidak ditemukan", []);
+            }
+        } catch (PDOException $e) {
+            $this->handleStatus(false, "Database error: " . $e->getMessage());
+        }
+    }
+
     public function updateActivity($id, $isCompleted) {
         try {
             $sql = "UPDATE " . TODO_LIST . " SET " . IS_COMPLETED . " = :isCompleted WHERE " . ID . " = :id";
@@ -203,20 +241,27 @@ class Api {
         }
     }
 
-    public function editActivity($id, $title, $desc, $isCompleted) {
+    public function editActivity($id, $title, $desc, $date, $time, $categoryId, $isCompleted) {
         try {
-            $sql = "UPDATE " . TODO_LIST . " SET " . IS_COMPLETED . " = :isCompleted, " . TITLE . " = :title, " . DESCRIPTION . " = :description WHERE " . ID . " = :id";
+            $sql = "UPDATE " . TODO_LIST . " SET " . IS_COMPLETED . " = :isCompleted, " . TITLE . " = :title, " . DESCRIPTION . " = :desc, " . DATE . " = :date, " . TIME . " = :time, " . CATEGORY_ID . " = :categoryId WHERE " . ID . " = :id";
             
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':isCompleted', $isCompleted);
             $stmt->bindParam(':title', $title);
-            $stmt->bindParam(':description', $desc);
+            $stmt->bindParam(':desc', $desc);
+            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':time', $time);
+            $stmt->bindParam(':categoryId', $categoryId);
             $stmt->bindParam(':id', $id);
             
             if ($stmt->execute()) {
-                $this->handleStatus(true, "Berhasil Update Data");
+                if ($stmt->rowCount() > 0) {
+                    $this->handleStatus(true, "Category successfully updated");
+                } else {
+                    $this->handleStatus(false, "No changes made to the category");
+                }
             } else {
-                $this->handleStatus(false, "Gagal Update Data");
+                $this->handleStatus(false, "Failed to update category");
             }
         } catch (PDOException $e) {
             $this->handleStatus(false, "Database error: " . $e->getMessage());
